@@ -5,6 +5,7 @@ from app.services.groq_client import generate_text
 from app.utils.prompt_templates import build_prompts
 from app.rag.embedder import get_embedding
 from app.rag.vector_store import add_to_index
+from app.agents.content_agent import improved_scripts
 
 
 def store_scripts_in_rag(scripts):
@@ -22,14 +23,20 @@ def store_scripts_in_rag(scripts):
 
 def extract_json(text):
     try:
-        return json.loads(text)
+        parsed = json.loads(text)
+        if "scripts" in parsed:
+            return parsed
     except:
-        match = re.search(r"\{.*\}", text, re.DOTALL)
-        if match:
-            try:
-                return json.loads(match.group())
-            except:
-                pass
+        pass
+    match = re.search(r"\{.*\}", text, re.DOTALL)
+    if match:
+        try:
+            parsed = json.loads(match.group())
+            if "scripts" in parsed:
+                return parsed
+        except:
+            pass
+    print("💀 JSON PARSER FAILED..")
     return {"scripts": []}
 
 
@@ -44,7 +51,7 @@ def generate_scripts(data):
     prompt = build_prompts(
         niche,
         data.get("tone", "engaging"),
-        data.get("num_scripts", 5)
+        data.get("num_scripts", 10)
     )
 
     
@@ -64,9 +71,22 @@ Return ONLY valid JSON. No extra text.
 
     
     parsed = extract_json(raw_output)
-    if parsed.get("scripts"):
+    scripts = parsed.get("scripts", [])
+    
+    improved_list = []
+    
+    for s in scripts:
+        improved = improved_scripts(s)
+        if improved and isinstance(improved, dict):
+            improved_list.append(improved)
+        else:
+            improved_list.append(s)
+            
+    if improved_list:
         store_scripts_in_rag(parsed["scripts"])
+        
+    final_output = {"scripts": improved_list}
 
-    print("\n===== PARSED OUTPUT =====\n", parsed)
+    print("\n===== PARSED OUTPUT =====\n", final_output)
 
-    return parsed
+    return final_output

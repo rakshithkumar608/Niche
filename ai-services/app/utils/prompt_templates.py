@@ -17,7 +17,13 @@ Create content that stops scrolling instantly and keeps viewers watching till th
 - Avoid repeating phrases or patterns
 - Use natural, human-like language (NOT robotic)
 - Keep it punchy, short, and impactful
-- Emojis can be used ONLY if they enhance engagement (do not overuse)
+
+
+🎨 EMOJI USAGE (IMPORTANT):
+- Each script MUST include emojis
+- Use emojis in Hook, Content, and CTA
+- Keep them relevant (🔥 😱 💪 💰 etc.)
+- Do NOT overuse (max 2 per section)
 
 ---
 
@@ -75,7 +81,11 @@ Do NOT include any text before or after JSON.
 
 ---
 
-⚠️ If output is not valid JSON, regenerate it internally.
+⚠️ STRICT RULE:
+- Output MUST be valid JSON
+- Do NOT include any explanation
+- Do NOT include text outside JSON
+- If JSON is invalid, fix it before responding
 
 🚀 Make it feel HUMAN, VIRAL, and READY-TO-RECORD.
 """
