@@ -6,6 +6,6 @@ router =  APIRouter()
 
 
 @router.post("/generate")
-def generate(data: ScriptRequest):
-    result = generate_scripts(data.dict())
-    return result
+async def generate(data: dict):
+    print("🔥 RECEIVED FROM NODE:", data)
+    return  generate_scripts(data)

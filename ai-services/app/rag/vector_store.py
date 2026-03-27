@@ -1,5 +1,6 @@
 import faiss
 import numpy as np
+from app.rag.embedder import get_embedding
 
 
 dimension = 384
@@ -16,8 +17,13 @@ def add_to_index(texts, embeddings):
 def add_texts(texts, embeddings):
     add_to_index(texts, embeddings)
     
-def search(query_embedding, k=3):
-    D, I = index.search(np.array([query_embedding]).astype("float32"), k)
+def search(query: str, k=3):
+    query_embedding = get_embedding(query)
+    
+    query_vector = np.array([query_embedding]).astype("float32")
+    
+    D, I = index.search(query_vector, k)
+    
+    
     return [stored_texts[i] for i in I[0] if i < len(stored_texts)]
-sorted_texts = sorted(stored_texts)
 

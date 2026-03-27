@@ -8,11 +8,17 @@ const ScriptSchema = new mongoose.Schema(
         pattern_interrupt: String,
         cta: String,
         niche: String,
-        tone: String
+        tone: String,
+        
+        performance_score: {
+            type: Number,
+            default: 0
+        }
     },
     {
         timestamps: true
-    }
+    },
+    
 );
 
 module.exports = mongoose.model('Script', ScriptSchema)

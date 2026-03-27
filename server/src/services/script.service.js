@@ -12,7 +12,8 @@ exports.generateScripts = async (payload) => {
     const scriptsWithMeta = aiResponse.scripts.map((s) => ({
         ...s,
         niche: payload.niche,
-        tone: payload.tone
+        tone: payload.tone,
+        performance_score: s.virality_score || 0
     }));
 
     const saved = await Script.insertMany(scriptsWithMeta);
