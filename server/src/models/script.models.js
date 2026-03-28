@@ -1,5 +1,4 @@
-const mongoose = require("mongoose");
-
+import mongoose from "mongoose";
 
 const ScriptSchema = new mongoose.Schema(
     {
@@ -21,4 +20,4 @@ const ScriptSchema = new mongoose.Schema(
     
 );
 
-module.exports = mongoose.model('Script', ScriptSchema)
+export default mongoose.model('Script', ScriptSchema);

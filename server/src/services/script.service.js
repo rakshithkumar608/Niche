@@ -1,8 +1,8 @@
-const Script = require("../models/script.models");
-const { generateFromPython } = require("./python.service")
+import Script from "../models/script.models.js";
+import Generation from "../models/generation.model.js";
+import { generateFromPython } from "./python.service.js";
 
-
-exports.generateScripts = async (payload) => {
+export const generateScripts = async (payload) => {
     const aiResponse = await generateFromPython(payload);
 
     if (!aiResponse.scripts || aiResponse.scripts.length === 0) {
@@ -13,10 +13,18 @@ exports.generateScripts = async (payload) => {
         ...s,
         niche: payload.niche,
         tone: payload.tone,
-        performance_score: s.virality_score || 0
+        performance_score: s.virality_score || 0,
     }));
 
-    const saved = await Script.insertMany(scriptsWithMeta);
+    const savedScripts = await Script.insertMany(scriptsWithMeta);
 
-    return saved;
-}
+    // Create a generation record grouping these scripts
+    const generation = await Generation.create({
+        niche: payload.niche,
+        tone: payload.tone,
+        count: payload.count || 5,
+        scripts: savedScripts.map((s) => s._id),
+    });
+
+    return { scripts: savedScripts, generation };
+};

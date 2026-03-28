@@ -18,9 +18,10 @@ app.use(
 );
 app.use(express.json());
 
-app.use('/api/scripts', scriptRoutes);
+app.use("/api/scripts", scriptRoutes);
 app.use("/api/auth", authRoutes);
 
-export default app;
-
+// Error handler must be registered AFTER all routes
 app.use(errorHandler);
+
+export default app;

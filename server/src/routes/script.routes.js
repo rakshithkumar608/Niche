@@ -1,8 +1,9 @@
-const express = require("express");
+import express from "express";
+import { generateScripts, getHistory } from "../controllers/script.controller.js";
+
 const router = express.Router();
-const controller = require('../controllers/script.controller');
 
+router.post("/generate", generateScripts);
+router.get("/history", getHistory);
 
-router.post('/generate', controller.generateScripts);
-
-module.exports = router;
+export default router;
