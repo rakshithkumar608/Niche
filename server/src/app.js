@@ -1,8 +1,12 @@
-const express = require("express");
-const cors = require('cors');
+import express from "express";
+import dotenv from "dotenv";
+import cors from "cors";
 
-const scriptRoutes = require('./routes/script.routes');
-const errorHandler = require('./middlewares/error.middleware');
+dotenv.config();
+
+import scriptRoutes from "./routes/script.routes.js";
+import errorHandler from "./middlewares/error.middleware.js";
+import authRoutes from "./routes/auth.routes.js";
 
 const app = express();
 
@@ -10,7 +14,8 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api/scripts', scriptRoutes);
+app.use("/api/auth", authRoutes);
 
-module.exports = app;
+export default app;
 
 app.use(errorHandler);
