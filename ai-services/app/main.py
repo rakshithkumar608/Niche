@@ -7,7 +7,11 @@ app = FastAPI()
 
 @app.on_event("startup")
 def startup_event():
-    print("Loading RAG initial data...")
-    load_initial_data()
+    try:
+        print("🚀 Loading RAG initial data...")
+        load_initial_data()
+        print("✅ Data loaded successfully")
+    except Exception as e:
+        print("❌ Error loading data:", str(e))
 
 app.include_router(router, prefix="/agent")
