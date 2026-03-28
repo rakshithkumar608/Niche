@@ -3,8 +3,8 @@ from app.routes.agent_routes import router
 
 app = FastAPI()
 
-@app.on_event("startup")
-def startup_event():
-    print("🚀 Startup running (no data load)")
+@app.get("/")
+def home():
+    return {"message": "AI service is running 🚀"}
 
 app.include_router(router, prefix="/agent")
