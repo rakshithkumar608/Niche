@@ -238,7 +238,7 @@ export default function HistoryPage() {
                         })}
                     </div>
                 )}
-            </div>
+            </div>  
         </div>
     );
 }
