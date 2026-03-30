@@ -2,6 +2,9 @@
 
 import API from "@/app/lib/api";
 import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Calendar, ChevronDown, Copy, Sparkles } from "lucide-react";
+import toast from "react-hot-toast";
 
 interface Script {
     _id: string;
@@ -54,12 +57,22 @@ export default function HistoryPage() {
         }));
     };
 
+    const copyScript = (script: Script) => {
+        const text = `${script.hook}\n\n${script.content}\n\nPattern Interrupt: ${script.pattern_interrupt}\nCTA: ${script.cta}`;
+        navigator.clipboard.writeText(text);
+        toast.success("Script copied to clipboard!");
+    };
+
     if (loading) {
         return (
-            <div className="flex items-center justify-center min-h-100">
+            <div className="flex items-center justify-center min-h-[70vh]">
                 <div className="text-center">
-                    <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
-                    <p className="text-gray-500">Loading history...</p>
+                    <motion.div 
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+                        className="w-12 h-12 border-4 border-[#6750A4] border-t-transparent rounded-full mx-auto mb-4"
+                    />
+                    <p className="text-[#49454F]">Loading your creation history...</p>
                 </div>
             </div>
         );
@@ -67,125 +80,165 @@ export default function HistoryPage() {
 
     if (error) {
         return (
-            <div className="p-6">
-                <h1 className="text-2xl font-bold mb-4">History 📜</h1>
-                <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg">
-                    {error}
+            <div className="p-8 max-w-md mx-auto">
+                <div className="bg-red-50 border border-red-200 text-red-700 p-6 rounded-2xl text-center">
+                    <p className="font-medium">{error}</p>
                 </div>
             </div>
         );
     }
 
     return (
-        <div>
-            <div className="flex items-center justify-between mb-6">
-                <h1 className="text-2xl font-bold">History 📜</h1>
-                <span className="text-sm text-gray-500">{generations.length} generation{generations.length !== 1 ? "s" : ""}</span>
-            </div>
-
-            {generations.length === 0 ? (
-                <div className="bg-white rounded-xl shadow p-8 text-center">
-                    <p className="text-gray-500 text-lg">No scripts generated yet.</p>
-                    <p className="text-gray-400 text-sm mt-1">Go to Generate to create your first series of scripts!</p>
+        <div className="min-h-[calc(100vh-80px)] bg-[#FFFBFE] py-10 px-6">
+            <div className="max-w-5xl mx-auto">
+                
+                <div className="flex items-center justify-between mb-12">
+                    <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 bg-[#6750A4] rounded-2xl flex items-center justify-center">
+                            <Sparkles className="w-7 h-7 text-white" />
+                        </div>
+                        <div>
+                            <h1 className="text-5xl font-medium text-[#1C1B1F] tracking-tight">History</h1>
+                            <p className="text-[#49454F]">Your previous generations</p>
+                        </div>
+                    </div>
+                    <div className="text-sm text-[#79747E] bg-white px-5 py-2 rounded-full border border-[#E7E0EC]">
+                        {generations.length} generations
+                    </div>
                 </div>
-            ) : (
-                <div className="space-y-6">
-                    {generations.map((gen) => {
-                        const isExpanded = !!expandedGens[gen._id];
-                        return (
-                            <div
-                                key={gen._id}
-                                className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden"
-                            >
-                                {/* Generation Header bar (Clickable) */}
-                                <div 
-                                    className="bg-linear-to-r from-blue-500 to-indigo-600 px-5 py-4 cursor-pointer flex items-center justify-between transition-colors hover:from-blue-600 hover:to-indigo-700"
-                                    onClick={() => toggleExpand(gen._id)}
+
+                {generations.length === 0 ? (
+                    <div className="bg-white rounded-3xl p-16 text-center shadow-sm border border-[#E7E0EC]">
+                        <div className="mx-auto w-20 h-20 bg-[#E8DEF8] rounded-2xl flex items-center justify-center mb-6">
+                            <Sparkles className="w-12 h-12 text-[#6750A4]" />
+                        </div>
+                        <h3 className="text-2xl font-medium text-[#1C1B1F] mb-3">No generations yet</h3>
+                        <p className="text-[#49454F] max-w-md mx-auto">
+                            Go to the Generate page and create your first batch of viral scripts!
+                        </p>
+                    </div>
+                ) : (
+                    <div className="space-y-8">
+                        {generations.map((gen, genIndex) => {
+                            const isExpanded = !!expandedGens[gen._id];
+                            return (
+                                <motion.div
+                                    key={gen._id}
+                                    initial={{ opacity: 0, y: 30 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: genIndex * 0.05 }}
+                                    className="bg-white rounded-3xl overflow-hidden border border-[#E7E0EC] shadow-sm"
                                 >
-                                    <div className="flex items-center gap-3">
-                                        <div className="flex flex-col">
-                                            <div className="flex items-center gap-2 mb-1">
-                                                <span className="text-white font-semibold">
+                                    
+                                    <div
+                                        onClick={() => toggleExpand(gen._id)}
+                                        className="bg-[#F3EDF7] px-8 py-6 flex items-center justify-between cursor-pointer hover:bg-[#E8DEF8] transition-all group"
+                                    >
+                                        <div className="flex items-center gap-5">
+                                            <div className="w-11 h-11 bg-white rounded-2xl flex items-center justify-center shadow-sm">
+                                                <Calendar className="w-6 h-6 text-[#6750A4]" />
+                                            </div>
+                                            <div>
+                                                <div className="font-medium text-[#1C1B1F] text-lg">
                                                     Batch of {gen.count || gen.scripts?.length || 0} Scripts
-                                                </span>
-                                            </div>
-                                            <div className="flex items-center gap-2">
-                                                <span className="bg-white/20 text-white text-xs font-medium px-2.5 py-1 rounded-full">
-                                                    {gen.niche}
-                                                </span>
-                                                <span className="bg-white/20 text-white text-xs font-medium px-2.5 py-1 rounded-full">
-                                                    {gen.tone}
-                                                </span>
+                                                </div>
+                                                <div className="flex items-center gap-3 mt-1">
+                                                    <span className="bg-white px-4 py-1 text-xs font-medium rounded-full text-[#6750A4] border border-[#E7E0EC]">
+                                                        {gen.niche}
+                                                    </span>
+                                                    <span className="bg-white px-4 py-1 text-xs font-medium rounded-full text-[#7D5260] border border-[#E7E0EC]">
+                                                        {gen.tone}
+                                                    </span>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div className="flex items-center gap-4">
-                                        <span className="text-white/80 text-sm">
-                                            {new Date(gen.createdAt).toLocaleDateString("en-US", {
-                                                month: "short",
-                                                day: "numeric",
-                                                year: "numeric",
-                                                hour: "2-digit",
-                                                minute: "2-digit",
-                                            })}
-                                        </span>
-                                        <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
-                                            <svg className={`w-4 h-4 text-white transform transition-transform ${isExpanded ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                                            </svg>
+
+                                        <div className="flex items-center gap-6 text-sm text-[#79747E]">
+                                            <span>
+                                                {new Date(gen.createdAt).toLocaleDateString("en-US", {
+                                                    month: "short",
+                                                    day: "numeric",
+                                                    year: "numeric"
+                                                })}
+                                            </span>
+                                            <motion.div
+                                                animate={{ rotate: isExpanded ? 180 : 0 }}
+                                                transition={{ duration: 0.3 }}
+                                            >
+                                                <ChevronDown className="w-5 h-5" />
+                                            </motion.div>
                                         </div>
                                     </div>
-                                </div>
 
-                                {/* Expanded Scripts Body */}
-                                {isExpanded && (
-                                    <div className="p-5 bg-gray-50 border-t border-gray-100">
-                                        <div className="space-y-4">
-                                            {(!gen.scripts || gen.scripts.length === 0) ? (
-                                                <p className="text-gray-500 text-sm text-center py-4">No scripts found for this generation.</p>
-                                            ) : (
-                                                gen.scripts.map((script, index) => (
-                                                    <div key={script._id} className="bg-white border text-left border-gray-200 rounded-lg p-5 shadow-sm">
-                                                        <div className="flex justify-between items-center mb-3 border-b border-gray-100 pb-2">
-                                                            <span className="text-gray-500 font-semibold text-sm">Virtual Script #{index + 1}</span>
-                                                            <span className="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-full border border-green-200">
-                                                                Score: {script.performance_score}
-                                                            </span>
-                                                        </div>
+                                    
+                                    <AnimatePresence>
+                                        {isExpanded && (
+                                            <motion.div
+                                                initial={{ height: 0, opacity: 0 }}
+                                                animate={{ height: "auto", opacity: 1 }}
+                                                exit={{ height: 0, opacity: 0 }}
+                                                transition={{ duration: 0.4, ease: [0.2, 0, 0, 1] }}
+                                                className="overflow-hidden"
+                                            >
+                                                <div className="p-8 space-y-6 bg-white">
+                                                    {gen.scripts && gen.scripts.length > 0 ? (
+                                                        gen.scripts.map((script, idx) => (
+                                                            <div 
+                                                                key={script._id || idx}
+                                                                className="bg-[#FFFBFE] border border-[#E7E0EC] rounded-2xl p-7 hover:shadow-md transition-shadow"
+                                                            >
+                                                                <div className="flex justify-between items-start mb-5">
+                                                                    <div>
+                                                                        <div className="uppercase text-xs tracking-widest text-[#79747E]">SCRIPT {idx + 1}</div>
+                                                                        <h3 className="text-xl font-semibold text-[#1C1B1F] mt-1 leading-tight">
+                                                                            {script.hook}
+                                                                        </h3>
+                                                                    </div>
+                                                                    <motion.button
+                                                                        whileHover={{ scale: 1.1 }}
+                                                                        whileTap={{ scale: 0.9 }}
+                                                                        onClick={() => copyScript(script)}
+                                                                        className="text-[#6750A4] hover:text-[#6750A4]/80 p-2 rounded-xl hover:bg-[#E8DEF8] transition-colors"
+                                                                    >
+                                                                        <Copy className="w-5 h-5" />
+                                                                    </motion.button>
+                                                                </div>
 
-                                                        <h2 className="text-md font-bold text-gray-800 mb-2">
-                                                            🎣 {script.hook}
-                                                        </h2>
-                                                        <p className="text-gray-600 text-sm leading-relaxed mb-3 whitespace-pre-wrap">
-                                                            {script.content}
-                                                        </p>
-
-                                                        {script.pattern_interrupt && (
-                                                            <div className="bg-amber-50 border-l-4 border-amber-400 px-4 py-2 mb-3 rounded-r">
-                                                                <p className="text-amber-800 text-sm font-medium">
-                                                                    ⚡ Pattern Interrupt
+                                                                <p className="text-[#49454F] leading-relaxed text-[17px] mb-6">
+                                                                    {script.content}
                                                                 </p>
-                                                                <p className="text-amber-700 text-sm">{script.pattern_interrupt}</p>
-                                                            </div>
-                                                        )}
 
-                                                        <div className="bg-blue-50 border-l-4 border-blue-400 px-4 py-2 rounded-r">
-                                                            <p className="text-blue-800 text-sm font-medium">
-                                                                📢 Call to Action
-                                                            </p>
-                                                            <p className="text-blue-700 text-sm">{script.cta}</p>
-                                                        </div>
-                                                    </div>
-                                                ))
-                                            )}
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-                        );
-                    })}
-                </div>
-            )}
+                                                                {script.pattern_interrupt && (
+                                                                    <div className="bg-amber-50 border-l-4 border-amber-400 p-5 rounded-r-2xl mb-5">
+                                                                        <p className="font-medium text-amber-800 text-sm mb-1">⚡ Pattern Interrupt</p>
+                                                                        <p className="text-amber-700">{script.pattern_interrupt}</p>
+                                                                    </div>
+                                                                )}
+
+                                                                <div className="bg-[#E8DEF8]/30 border-l-4 border-[#6750A4] p-5 rounded-r-2xl">
+                                                                    <p className="font-medium text-[#6750A4] text-sm mb-1">📢 Call to Action</p>
+                                                                    <p className="text-[#49454F]">{script.cta}</p>
+                                                                </div>
+
+                                                                <div className="mt-6 flex items-center gap-2">
+                                                                    <span className="text-xs text-[#79747E]">Performance Score</span>
+                                                                    <span className="font-bold text-green-600 text-lg">★ {script.performance_score}</span>
+                                                                </div>
+                                                            </div>
+                                                        ))
+                                                    ) : (
+                                                        <p className="text-center text-[#79747E] py-8">No scripts found in this generation.</p>
+                                                    )}
+                                                </div>
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
+                                </motion.div>
+                            );
+                        })}
+                    </div>
+                )}
+            </div>
         </div>
     );
 }
