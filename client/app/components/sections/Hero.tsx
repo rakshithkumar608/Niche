@@ -2,13 +2,13 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import React from 'react';
+
 
 export default function Hero() {
   return (
     <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
       
-      {/* Background Image */}
+    
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
@@ -16,10 +16,10 @@ export default function Hero() {
         }}
       />
 
-      {/* Enhanced Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/60 to-black/80" />
+    
+      <div className="absolute inset-0 bg-linear-to-b from-black/30 via-black/60 to-black/80" />
 
-      {/* Decorative Blur Shapes - More Vibrant */}
+     
       <div className="absolute inset-0 pointer-events-none">
         <motion.div 
           animate={{ 
@@ -27,7 +27,7 @@ export default function Hero() {
             opacity: [0.35, 0.55, 0.35]
           }}
           transition={{ duration: 25, repeat: Infinity }}
-          className="absolute -top-20 -left-40 w-[800px] h-[800px] bg-[#6750A4]/40 rounded-full blur-3xl"
+          className="absolute -top-20 -left-40 w-200 h-200 bg-[#6750A4]/40 rounded-full blur-3xl"
         />
         <motion.div 
           animate={{ 
@@ -35,7 +35,7 @@ export default function Hero() {
             opacity: [0.25, 0.45, 0.25]
           }}
           transition={{ duration: 32, repeat: Infinity, delay: 8 }}
-          className="absolute -bottom-40 right-10 w-[700px] h-[700px] bg-[#7D5260]/35 rounded-full blur-3xl"
+          className="absolute -bottom-40 right-10 w-175 h-175 bg-[#7D5260]/35 rounded-full blur-3xl"
         />
         <motion.div 
           animate={{ 
@@ -43,24 +43,24 @@ export default function Hero() {
             rotate: [0, 12, 0]
           }}
           transition={{ duration: 40, repeat: Infinity }}
-          className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-[#E8DEF8]/25 rounded-[200px] blur-3xl"
+          className="absolute top-1/4 left-1/2 -translate-x-1/2 w-150 h-150 bg-[#E8DEF8]/25 rounded-[200px] blur-3xl"
         />
       </div>
 
-      <div className="relative z-10 max-w-6xl px-6 text-center pt-16 md:pt-8">
+      <div className="relative z-10 max-w-6xl px-6 text-center pt-16 md:pt-8 mt-10">
         
-        {/* Vibrant Badge */}
+       
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.7 }}
           className="mx-auto mb-8 inline-flex items-center gap-3 px-6 py-3 bg-white/10 backdrop-blur-2xl border border-white/30 rounded-full"
         >
-          <div className="w-3 h-3 bg-[#E8DEF8] rounded-full animate-ping" />
+          <div className="w-3 h-3 bg-[#E8DEF8] rounded-full animate-ping " />
           <span className="uppercase tracking-[3px] text-sm font-semibold text-white">Next-Gen AI Content Studio</span>
         </motion.div>
 
-        {/* Hero Headline - Bigger, Bolder, Gradient */}
+      
         <motion.h1 
           initial={{ opacity: 0, y: 60 }}
           animate={{ opacity: 1, y: 0 }}
@@ -68,25 +68,25 @@ export default function Hero() {
           className="text-6xl md:text-7xl lg:text-[92px] font-bold leading-[1.05] tracking-[-0.06em] text-white"
         >
           Create{' '}
-          <span className="bg-gradient-to-r from-[#E8DEF8] via-[#FFFBFE] to-[#D0BCFF] bg-clip-text text-transparent">
+          <span className="bg-linear-to-r from-[#48b04f] via-[#d8ced5] to-[#D0BCFF] bg-clip-text text-transparent">
             Viral Content
           </span>
           <br className="hidden md:block" /> 
           in Seconds
         </motion.h1>
 
-        {/* Subtitle - Cleaner & Modern */}
+    
         <motion.p 
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.25 }}
-          className="mt-8 text-lg md:text-xl text-white/90 max-w-3xl mx-auto leading-relaxed font-light"
+          className="mt-8 text-lg md:text-xl text-white/90 max-w-3xl mx-auto leading-relaxed font-semibold"
         >
           Turn ideas into scroll-stopping TikTok, YouTube Shorts &amp; Instagram Reels instantly.<br className="hidden md:block" />
           No writer&apos;s block. Just pure viral magic powered by AI.
         </motion.p>
 
-        {/* CTA Buttons - Dual Buttons for Modern Feel */}
+     
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
@@ -97,7 +97,7 @@ export default function Hero() {
             <motion.button
               whileHover={{ scale: 1.06 }}
               whileTap={{ scale: 0.96 }}
-              className="group px-12 py-4 bg-white text-black font-semibold text-lg rounded-full shadow-2xl hover:shadow-xl transition-all flex items-center gap-3 min-w-[240px] justify-center"
+              className="group px-12 py-4 bg-white text-black font-semibold text-lg rounded-full shadow-2xl hover:shadow-xl transition-all flex items-center gap-3 min-w-60 justify-center"
             >
               Start Creating Free
               <motion.span 
@@ -114,7 +114,7 @@ export default function Hero() {
             <motion.button
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
-              className="px-10 py-4 border-2 border-white/80 hover:border-white text-white font-medium text-lg rounded-full transition-all min-w-[180px]"
+              className="px-10 py-4 border-2 border-white/80 hover:border-white text-white font-medium text-lg rounded-full transition-all min-w-45"
             >
               Watch Demo
             </motion.button>
@@ -126,18 +126,18 @@ export default function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1 }}
-          className="mt-20 flex flex-wrap justify-center gap-x-12 gap-y-6 text-white/75 text-sm"
+          className="mt-30 flex flex-wrap justify-center gap-x-12 gap-y-6 text-white/75 text-sm "
         >
           
           
         </motion.div>
       </div>
-      {/* Scroll Prompt */}
+      
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.3 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center text-white/60 text-xs tracking-widest"
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center   tracking-widest font-bold text-white/70 text-xs"
       >
         SCROLL TO DISCOVER
         <motion.div

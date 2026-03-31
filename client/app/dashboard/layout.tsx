@@ -32,10 +32,10 @@ export default function DashboardLayout({
 
   return (
     <div className="min-h-screen bg-[#FFFBFE] flex overflow-hidden">
-      {/* Enhanced Sidebar with Background Animation */}
+     
       <aside className="hidden lg:flex w-72 flex-col border-r border-[#E7E0EC] bg-[#F3EDF7] relative overflow-hidden shadow-sm">
         
-        {/* Animated Background Shapes - Material You Signature */}
+        
         <div className="absolute inset-0 pointer-events-none">
           <motion.div 
             animate={{ 
@@ -93,13 +93,13 @@ export default function DashboardLayout({
           </nav>
         </div>
 
-        {/* Logout Button */}
+        
         <div className="mt-auto p-8 relative z-10">
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.96 }}
             onClick={handleLogout}
-            className="w-full py-3.5 text-[#B3261E] hover:bg-[#F2B8B5]/10 rounded-2xl transition-all duration-300 flex items-center justify-center gap-2 font-medium active:scale-95"
+            className="w-full py-3.5 text-[#B3261E] bg-[#B3261E] rounded-2xl transition-all duration-300 flex items-center justify-center gap-2 font-medium active:scale-95"
           >
             <span>Logout</span>
           </motion.button>
